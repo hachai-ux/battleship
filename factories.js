@@ -40,7 +40,8 @@ const GameboardFactory = (size) => {
         for (let i = 0; i < boardSize; i++) {
             const innerArray = [];
             for (var j = 0; j < boardSize; j++) {
-                innerArray.push(0);
+                //set status of every board element to 0(empty)
+                innerArray.push({status: 0});
             };
 
             coordinates.push(innerArray);
@@ -49,7 +50,7 @@ const GameboardFactory = (size) => {
 
     };
 
-    const _checkPlaceable = (shipLength, x, y, direction) => {
+    const _checkPlaceable = (shipLength, y, x, direction) => {
         let isPlaceable = true;
         if (direction === "horizontal") {
             for (let i = 0; i < shipLength; i++) {
@@ -78,21 +79,23 @@ const GameboardFactory = (size) => {
         return isPlaceable;
     }
 
-    const placeShip = (shipLength, x, y, direction) => {
-
-        const isPlaceable = _checkPlaceable(shipLength, x, y, direction);
+    const placeShip = (shipLength, y, x, direction) => {
+    
+        const isPlaceable = _checkPlaceable(shipLength, y, x, direction);
         //outer = y
         //inner = x
         if (isPlaceable === true) {
+            const ship = ShipFactory(shipLength);
             if (direction === "horizontal") {
                 for (let i = 0; i < shipLength; i++) {
                     
-                    coordinates[y][x+i] = 1;
+                    coordinates[y][x + i] = {ship: ship, part: i, status: 1};
+                
                 };
             }
             else if (direction === "vertical") {
                 for (let i = 0; i < shipLength; i++) {
-                    coordinates[y+i][x] = 1;
+                    coordinates[y+i][x] = {ship: ship, part: i, status: 1};
                 };
             };
         }
@@ -100,14 +103,33 @@ const GameboardFactory = (size) => {
         
     };
 
-    const receiveAttack = () => {
+    const receiveAttack = (y, x) => {
 
+        try {
+            if (coordinates[y][x].status === 1) {
+                //check status if ship is placed there, than hit ship with the position of the part of the ship
+                coordinates[y][x].ship.hit(coordinates[y][x].part);
+                //set board status
+                coordinates[y][x].status = 2;
+            }
+            else {
+                //set board status to missed if no ship was placed(status not 1)
+                coordinates[y][x].status = 3;
+            };
+        }
+        catch (error) {
+            //coordinates don't exist
+            console.error(error);
+            };
+       
     };
 
     _createBoard();
-    console.log(getCoordinates()[0][0]);
 
     return { placeShip, receiveAttack, getCoordinates };
 };
 
-export  { ShipFactory, GameboardFactory };
+export { ShipFactory, GameboardFactory };
+
+//backlog:
+//hit function to the correct ship

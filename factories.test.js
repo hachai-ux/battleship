@@ -28,36 +28,52 @@ describe('place ships at specific coordinates on gameboard with size 12x12', () 
     gameboard.placeShip(3, 0, 0, 'vertical');
     test('Is the ship placed at specific coordinates?', () => {
         //coordinate array with field objects with isPlaced and isHit properties
-        expect(gameboard.getCoordinates()[0][0]).toEqual(1);
+        console.log(gameboard.getCoordinates()[0][0]);
+        expect(gameboard.getCoordinates()[0][0]).toHaveProperty("ship");
     });
 
     test('Can not place ship outside of coordinates', () => {
         expect(gameboard.placeShip(12, 12, 12, "vertical")).toEqual("Can't place here, place somewhere else");
     });
-
-    //didn't test when ship sunken is true yet
 });
 
-describe.skip('Attack at coordinates with a hit and missed shot', () => {
+describe('Attack at coordinates with a hit and missed shot', () => {
     // Applies only to tests in this describe block
     const gameboard = GameboardFactory(12);
-    gameboard.placeShip(3, 1, 1, 'horizontal');
-    gameboard.receiveAttack(1, 1); //hit shot
-    gameboard.receiveAttack(12, 12); //missed shot
+    gameboard.placeShip(3, 0, 0, 'vertical');
+    gameboard.receiveAttack(0, 0); //hit shot
+    gameboard.receiveAttack(11, 11); //missed shot
 
-    test('Is the ship placed at specific coordinates?', () => {
-        expect(gameboard.getPlacedShips.coordinates()[0][0]).toEqual(true);
-    });
 
     test('Ship has been hit?', () => {
-        expect(gameboard.coordinates[1][1].isHit).toEqual(true);
-    });
-    test('Missed shot recorded?', () => {
-        expect(gameboard.coordinates[12][12].isMissed).toEqual(true);
+        expect(gameboard.getCoordinates()[0][0].ship.getHitStatus()[0]).toEqual(true);
     });
 
-    test('All ships sunk?', () => {
-        expect(gameboard.getAllSunkStatus).toEqual(false);
+    test('Ship hasnt been hit on second position, right?', () => {
+         //you can get the ship with either coordinates, the ship is placed on all three coordinates
+        expect(gameboard.getCoordinates()[0][0].ship.getHitStatus()[1]).toEqual(false);
+    });
+    test('Missed shot recorded?', () => {
+        expect(gameboard.getCoordinates()[11][11].status).toEqual(3);
+    });
+
+    test('Is ship sunk?', () => {
+        expect(gameboard.getCoordinates()[0][0].ship.getSunkStatus()).toEqual(false);
+    });
+});
+
+
+describe('Test when all parts of ship are sunk', () => {
+    // Applies only to tests in this describe block
+    const gameboard = GameboardFactory(12);
+    gameboard.placeShip(3, 0, 0, 'vertical');
+    gameboard.receiveAttack(0, 0); //hit shot
+    gameboard.receiveAttack(1, 0);
+    gameboard.receiveAttack(2, 0);
+
+
+    test('Is ship sunk?', () => {
+        expect(gameboard.getCoordinates()[0][0].ship.getSunkStatus()).toEqual(true);
     });
 });
 
