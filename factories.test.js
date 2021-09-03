@@ -25,24 +25,23 @@ describe('Hit ship on first position', () => {
 describe('place ships at specific coordinates on gameboard with size 12x12', () => {
     // Applies only to tests in this describe block
     const gameboard = GameboardFactory(12);
-    gameboard.placeShip(1, 1, 'horizontal');
-
+    gameboard.placeShip(3, 0, 0, 'vertical');
     test('Is the ship placed at specific coordinates?', () => {
         //coordinate array with field objects with isPlaced and isHit properties
-        expect(gameboard.coordinates[0][0].isPlaced).toEqual(true);
+        expect(gameboard.getCoordinates()[0][0]).toEqual(1);
     });
 
-    test('place ship outside of coordinates', () => {
-        expect(gameBoard.placeShip(12,12, vertical)).toEqual("Can't place here, place somewhere else");
+    test('Can not place ship outside of coordinates', () => {
+        expect(gameboard.placeShip(12, 12, 12, "vertical")).toEqual("Can't place here, place somewhere else");
     });
 
     //didn't test when ship sunken is true yet
 });
 
-describe('Attack at coordinates with a hit and missed shot', () => {
+describe.skip('Attack at coordinates with a hit and missed shot', () => {
     // Applies only to tests in this describe block
     const gameboard = GameboardFactory(12);
-    gameboard.placeShip(1, 1, 'horizontal');
+    gameboard.placeShip(3, 1, 1, 'horizontal');
     gameboard.receiveAttack(1, 1); //hit shot
     gameboard.receiveAttack(12, 12); //missed shot
 
