@@ -77,3 +77,36 @@ describe('Test when all parts of ship are sunk', () => {
     });
 });
 
+describe('Test players taking turns with attacking', () => {
+    //computerFactory inherits from playerFactory?
+    const player = PlayerFactory();
+    const computer = ComputerFactory();
+    player.attack(0, 0); //hit shot
+    computer.aiAttack();
+
+
+    test('Is attack legal for player?', () => {
+        //only legal if board was not attacked before
+        expect().toEqual(true);
+    });
+
+
+    test('Is attack legal for computer?', () => {
+           //only legal if board was not attacked before
+        expect().toEqual(true);
+    });
+
+
+    test('Was player attacked?', () => {
+    //check board for changed status
+    expect().toEqual(true);
+    });
+
+
+    test('Was player attacked?', () => {
+    //check board for changed status
+    expect().toEqual(true);
+    });
+});
+
+

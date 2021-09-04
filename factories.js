@@ -124,6 +124,20 @@ const GameboardFactory = (size) => {
        
     };
 
+    const PlayerFactory = () => {
+        
+        const attack = () => {
+
+        };
+    };
+    const ComputerFactory = () => {
+
+        const aiAttack = () => {
+
+        };
+    };
+
+
     _createBoard();
 
     return { placeShip, receiveAttack, getCoordinates };
