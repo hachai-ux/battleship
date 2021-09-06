@@ -175,7 +175,7 @@ const ComputerFactory = () => {
         else return true;
     };
     
-    return { aiAttack};
+    return {aiAttack};
 };
 
 export { ShipFactory, GameboardFactory, PlayerFactory, ComputerFactory };
