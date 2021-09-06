@@ -1,4 +1,4 @@
-import { ShipFactory, GameboardFactory } from './factories.js';
+import { ShipFactory, GameboardFactory, PlayerFactory, ComputerFactory } from './factories.js';
 
 describe('Hit ship on first position', () => {
     // Applies only to tests in this describe block
@@ -78,35 +78,59 @@ describe('Test when all parts of ship are sunk', () => {
 });
 
 describe('Test players taking turns with attacking', () => {
-    //computerFactory inherits from playerFactory?
+    const computerGameboard = GameboardFactory(12);
+    const playerGameboard = GameboardFactory(12);
+    computerGameboard.placeShip(3, 0, 0, 'vertical');
     const player = PlayerFactory();
     const computer = ComputerFactory();
-    player.attack(0, 0); //hit shot
-    computer.aiAttack();
+    player.attack(0, 0, computerGameboard); //hit shot
+    player.attack(11, 11, computerGameboard); //missed shot
+    computer.aiAttack(playerGameboard);
+    computer.aiAttack(playerGameboard);
 
 
-    test('Is attack legal for player?', () => {
+    test('Attack hits enemy gameboard(ship has been hit)', () => {
         //only legal if board was not attacked before
-        expect().toEqual(true);
+        expect(computerGameboard.getCoordinates()[0][0].ship.getHitStatus()[0]).toEqual(true)
     });
+
+    test('Missed shot recorded?', () => {
+        expect(computerGameboard.getCoordinates()[11][11].status).toEqual(3);
+    });
+
+
+    test('Did computer hit a gameboard element?', () => {
+            //cycle through two-dimensional array then check if status is either 2 or 3(sunken or missed)
+        const arrayChecker = (gameboard) => {
+            const bool = gameboard.getCoordinates().some(element => element.some(element => element.status === 3 || element.status === 2));
+            return bool;
+        };
+
+        expect(arrayChecker(playerGameboard)).toEqual(true);
+
+        });
 
 
     test('Is attack legal for computer?', () => {
-           //only legal if board was not attacked before
-        expect().toEqual(true);
+           //gameboard element can't be hit twice, so check if two coordinates are 2 or 3
+        const arrayCheckerV2 = (gameboard) => {
+            let iterator = 0;
+            gameboard.getCoordinates().forEach(element => {
+                element.forEach(element => {
+                    if (element.status === 3 || element.status === 2) {
+                        iterator++;
+                    };
+                
+                });
+            });
+            return iterator;
+          
+        };
+        //attacked twice
+        expect(arrayCheckerV2(playerGameboard)).toEqual(2);
     });
 
-
-    test('Was player attacked?', () => {
-    //check board for changed status
-    expect().toEqual(true);
-    });
-
-
-    test('Was player attacked?', () => {
-    //check board for changed status
-    expect().toEqual(true);
-    });
+   
 });
 
 

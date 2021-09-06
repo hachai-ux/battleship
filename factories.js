@@ -33,6 +33,7 @@ const GameboardFactory = (size) => {
     const coordinates = [];
     const boardSize = size;
     const getCoordinates = () => coordinates;
+
     
     const _createBoard = () => {
 
@@ -115,6 +116,7 @@ const GameboardFactory = (size) => {
             else {
                 //set board status to missed if no ship was placed(status not 1)
                 coordinates[y][x].status = 3;
+
             };
         }
         catch (error) {
@@ -124,26 +126,59 @@ const GameboardFactory = (size) => {
        
     };
 
-    const PlayerFactory = () => {
-        
-        const attack = () => {
-
-        };
-    };
-    const ComputerFactory = () => {
-
-        const aiAttack = () => {
-
-        };
-    };
-
 
     _createBoard();
 
     return { placeShip, receiveAttack, getCoordinates };
 };
 
-export { ShipFactory, GameboardFactory };
+const PlayerFactory = () => {
+
+    const attack = (y, x, gameboard) => {
+        gameboard.receiveAttack(y, x);
+    };
+    return { attack };
+};
+    
+const ComputerFactory = () => {
+
+    
+    const aiAttack = (gameboard) => {
+        const gameboardSize = gameboard.getCoordinates().length;
+        //coordinates to cycle through array
+        const y = _getRandomInt(0, gameboardSize);
+        const x = _getRandomInt(0, gameboardSize);
+        if (_checkLegal(y, x, gameboard) === true) {
+            gameboard.receiveAttack(y, x);
+        }
+        else {
+            //when all fields are 2 or 3 then we have a problem, however the game will probably stop before that
+            //not the most elegant solution so far
+            aiAttack(gameboard);
+        };
+       
+    };
+
+    const _getRandomInt = (min, max) => {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+    };
+
+    const _checkLegal = (y, x, gameboard) => {
+        console.log(y);
+        console.log(x);
+        console.log(gameboard);
+        if (gameboard.getCoordinates()[y][x].status === 3 || gameboard.getCoordinates()[y][x].status === 2) {
+            return false;
+        }
+        else return true;
+    };
+    
+    return { aiAttack};
+};
+
+export { ShipFactory, GameboardFactory, PlayerFactory, ComputerFactory };
 
 //backlog:
 //hit function to the correct ship
