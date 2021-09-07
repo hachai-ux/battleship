@@ -1,20 +1,12 @@
-import { PlayerFactory, ComputerFactory, GameboardFactory } from './factories.js';
-import { renderGameboard, renderShip } from './domManipulation.js';
+import { ShipFactory, PlayerFactory, ComputerFactory, GameboardFactory } from './factories.js';
+import { renderGameboard, updateField} from './domManipulation.js';
 //facilitator
-
+const playerID = 'player';
+const computerID = 'computer';
 const player = PlayerFactory();
 const computer = ComputerFactory();
-const computerGameboard = GameboardFactory(12);
-const playerGameboard = GameboardFactory(12);
-
-computerGameboard.placeShip(3, 0, 0, 'vertical');
-player.attack(0, 0, computerGameboard); //hit shot
-player.attack(11, 11, computerGameboard); //missed shot
-computer.aiAttack(playerGameboard);
-computer.aiAttack(playerGameboard);
-
-renderGameboard(10, 'player');
-renderGameboard(10, 'computer');
+const computerGameboard = GameboardFactory(10);
+const playerGameboard = GameboardFactory(10);
 
 const courier = {length: 5};
 const battleship = {length: 4};
@@ -28,21 +20,29 @@ const playerDestroyer = ShipFactory(destroyer.length);
 const playerSubmarine = ShipFactory(submarine.length);
 const playerPatrolBoat = ShipFactory(patrolBoat.length);
 
-const computerourier = ShipFactory(courier.length);
+const computerCourier = ShipFactory(courier.length);
 const computerBattleship = ShipFactory(battleship.length);
 const computerDestroyer = ShipFactory(destroyer.length);
 const computerSubmarine = ShipFactory(submarine.length);
 const computerPatrolBoat = ShipFactory(patrolBoat.length);
 
-renderShip(playerCourier, playerGameboard);
-renderShip(playerBattleship, playerGameboard);
-renderShip(playerDestroyer, playerGameboard);
-renderShip(playerSubmarine, playerGameboard);
-renderShip(playerPatrolBoat, playerGameboard);
+//pre-determined coordinates to test
+playerGameboard.placeShip(playerCourier, 0, 0, 'horizontal');
+playerGameboard.placeShip(playerBattleship, 1, 0, 'horizontal');
+playerGameboard.placeShip(playerDestroyer, 2, 0, 'horizontal');
+playerGameboard.placeShip(playerSubmarine, 3, 0, 'horizontal');
+playerGameboard.placeShip(playerPatrolBoat, 4, 0, 'horizontal');
 
-renderShip(computerCourier, computerGameboard);
-renderShip(computerBattleship, computerGameboard);
-renderShip(computerDestroyer, computerGameboard);
-renderShip(computerSubmarine, computerGameboard);
-renderShip(computerPatrolBoat, computerGameboard);
+computerGameboard.placeShip(computerCourier, 0, 0, 'horizontal');
+computerGameboard.placeShip(computerBattleship, 1, 0, 'horizontal');
+computerGameboard.placeShip(computerDestroyer, 2, 0, 'horizontal');
+computerGameboard.placeShip(computerSubmarine, 3, 0, 'horizontal');
+computerGameboard.placeShip(computerPatrolBoat, 4, 0, 'horizontal');
 
+renderGameboard(10, playerGameboard, playerID);
+renderGameboard(10, computerGameboard, computerID);
+
+//test
+updateField(computerGameboard, computerID, 0, 0);
+
+//important, check if ships are overlapped

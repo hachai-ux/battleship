@@ -53,6 +53,7 @@ const GameboardFactory = (size) => {
 
     const _checkPlaceable = (shipLength, y, x, direction) => {
         let isPlaceable = true;
+        //check overflow of board
         if (direction === "horizontal") {
             for (let i = 0; i < shipLength; i++) {
                 try {
@@ -77,25 +78,25 @@ const GameboardFactory = (size) => {
                 
             };
         };
+        //check ship overlaps
         return isPlaceable;
     }
 
-    const placeShip = (shipLength, y, x, direction) => {
+    const placeShip = (ship, y, x, direction) => {
     
-        const isPlaceable = _checkPlaceable(shipLength, y, x, direction);
+        const isPlaceable = _checkPlaceable(ship.getShipLength(), y, x, direction);
         //outer = y
         //inner = x
         if (isPlaceable === true) {
-            const ship = ShipFactory(shipLength);
             if (direction === "horizontal") {
-                for (let i = 0; i < shipLength; i++) {
+                for (let i = 0; i < ship.getShipLength(); i++) {
                     
                     coordinates[y][x + i] = {ship: ship, part: i, status: 1};
                 
                 };
             }
             else if (direction === "vertical") {
-                for (let i = 0; i < shipLength; i++) {
+                for (let i = 0; i < ship.getShipLength(); i++) {
                     coordinates[y+i][x] = {ship: ship, part: i, status: 1};
                 };
             };

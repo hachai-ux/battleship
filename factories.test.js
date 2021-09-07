@@ -25,7 +25,9 @@ describe('Hit ship on first position', () => {
 describe('place ships at specific coordinates on gameboard with size 12x12', () => {
     // Applies only to tests in this describe block
     const gameboard = GameboardFactory(12);
-    gameboard.placeShip(3, 0, 0, 'vertical');
+    const testShip = ShipFactory(3);
+    const testShip2 = ShipFactory(12);
+    gameboard.placeShip(testShip, 0, 0, 'vertical');
     test('Is the ship placed at specific coordinates?', () => {
         //coordinate array with field objects with isPlaced and isHit properties
         console.log(gameboard.getCoordinates()[0][0]);
@@ -33,14 +35,15 @@ describe('place ships at specific coordinates on gameboard with size 12x12', () 
     });
 
     test('Can not place ship outside of coordinates', () => {
-        expect(gameboard.placeShip(12, 12, 12, "vertical")).toEqual("Can't place here, place somewhere else");
+        expect(gameboard.placeShip(testShip2, 12, 12, "vertical")).toEqual("Can't place here, place somewhere else");
     });
 });
 
 describe('Attack at coordinates with a hit and missed shot', () => {
     // Applies only to tests in this describe block
     const gameboard = GameboardFactory(12);
-    gameboard.placeShip(3, 0, 0, 'vertical');
+     const testShip = ShipFactory(3);
+    gameboard.placeShip(testShip, 0, 0, 'vertical');
     gameboard.receiveAttack(0, 0); //hit shot
     gameboard.receiveAttack(11, 11); //missed shot
 
@@ -66,7 +69,8 @@ describe('Attack at coordinates with a hit and missed shot', () => {
 describe('Test when all parts of ship are sunk', () => {
     // Applies only to tests in this describe block
     const gameboard = GameboardFactory(12);
-    gameboard.placeShip(3, 0, 0, 'vertical');
+    const testShip = ShipFactory(3);
+    gameboard.placeShip(testShip, 0, 0, 'vertical');
     gameboard.receiveAttack(0, 0); //hit shot
     gameboard.receiveAttack(1, 0);
     gameboard.receiveAttack(2, 0);
@@ -80,7 +84,8 @@ describe('Test when all parts of ship are sunk', () => {
 describe('Test players taking turns with attacking', () => {
     const computerGameboard = GameboardFactory(12);
     const playerGameboard = GameboardFactory(12);
-    computerGameboard.placeShip(3, 0, 0, 'vertical');
+     const testShip = ShipFactory(3);
+    computerGameboard.placeShip(testShip, 0, 0, 'vertical');
     const player = PlayerFactory();
     const computer = ComputerFactory();
     player.attack(0, 0, computerGameboard); //hit shot
