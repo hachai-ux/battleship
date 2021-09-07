@@ -16,8 +16,8 @@ const renderGameboard = (size, id) => {
     };
 }
 
-const renderShip = () => {
+const renderShip = (ship, gameboard) => {
 //render placement of ships
 };
 
-export { renderGameboard };
+export { renderGameboard, renderShip };
