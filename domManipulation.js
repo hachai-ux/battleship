@@ -1,40 +1,60 @@
 
 const renderGameboard = (size, gameboard, id) => {
     const container = document.querySelector(`#${id}-board`);
-    let iterator = 0;
-    for (let i = 0; i < size; i++) {
+    gameboard.getCoordinates().forEach(row => {
         const boardRow = document.createElement('div');
         boardRow.classList.add('board-row');
-        
-        for (let j = 0; j < size; j++) {
-            iterator++;
+        row.forEach((field, i) => {
+            const y = field.y;
+            const x = field.x;
             const button = document.createElement('button');
-            button.setAttribute('data-index', `${iterator}`);
+            button.setAttribute('data-y', y);
+            button.setAttribute('data-x', x);
             button.classList.add('game-field');
-            button.classList.add(`row-${j}`);
+            button.classList.add(`row-${i}`);
 
             boardRow.appendChild(button);
-        };
-        container.appendChild(boardRow);
-    };
+        });
+         container.appendChild(boardRow);
+    });
     _renderShips(gameboard, id);
 };
 
+const observeFields = (player, id) => {
+    
+
+    _updateField(gameBoard, id);
+    const container = document.querySelector(`#${id}-board`);
+    const fields = container.querySelectorAll('.game-field');
+     fields.forEach(field => {
+        field.addEventListener('click', () => {
+            console.log(field.style.background);
+            if (field.style.background === 'lightskyblue') {
+                field.style.background = 'firebrick';
+            }
+            else if (field.style.background === '') {
+                field.style.background = 'darkseagreen';
+            
+            };
+        });
+    }); 
+};
+
+
 const _renderShips = (gameboard, id) => {
-    let iterator = 0;
+      //iterate through gameboard and assign blue to each field with a ship
     gameboard.getCoordinates().forEach((element, j) => element.forEach((field, i) => {
         const status = field.status;
-        iterator++;
-        console.log(iterator);
         const container = document.querySelector(`#${id}-board`);
-        const domField = container.querySelector(`.board-row>button[data-index="${iterator}"]`);
+        console.log(field.status);
+        const domField = container.querySelector(`.board-row>button[data-x="${i}"][data-y="${j}"]`);
         if (status === 1) {
-            domField.style.backgroundColor = "LightSkyBlue";
+            domField.style.background = "lightskyblue";
         };
     }))
 };
 
-const updateField = (gameboard, id, y, x) => {
+const _updateField = (gameboard, id, y, x) => {
 //render placement of ships on coordinates
 //color the fields depending on status
     // 0 = empty = no color
@@ -54,7 +74,7 @@ const updateField = (gameboard, id, y, x) => {
         //get field number
         iterator = (y + 1) * (x + 1);
         const field = container.querySelector(`.board-row>button[data-index="${iterator}"]`);
-        field.style.backgroundColor = "red";
+        field.style.background = 'brickred';
         
     }
     //missed
@@ -63,11 +83,13 @@ const updateField = (gameboard, id, y, x) => {
         //get field number
         iterator = (y + 1) * (x + 1);
         const field = container.querySelector(`.board-row>button[data-index="${iterator}"]`);
-        field.style.backgroundColor = "green";
+        field.style.background = 'darkseagreen';
         
     };
 
 
 };
 
-export { renderGameboard, updateField};
+export { renderGameboard, observeFields};
+
+//backlog: check if it has already placed ships #redundant if user places ships on gameboard

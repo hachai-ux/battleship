@@ -42,13 +42,13 @@ const GameboardFactory = (size) => {
             const innerArray = [];
             for (var j = 0; j < boardSize; j++) {
                 //set status of every board element to 0(empty)
-                innerArray.push({status: 0});
+                innerArray.push({status: 0, y: i, x: j});
             };
 
             coordinates.push(innerArray);
 
         };
-
+        console.log(coordinates);
     };
 
     const _checkPlaceable = (shipLength, y, x, direction) => {
@@ -91,13 +91,18 @@ const GameboardFactory = (size) => {
             if (direction === "horizontal") {
                 for (let i = 0; i < ship.getShipLength(); i++) {
                     
-                    coordinates[y][x + i] = {ship: ship, part: i, status: 1};
+                    coordinates[y][x + i].ship = ship;
+                    coordinates[y][x + i].part = i;
+                    coordinates[y][x + i].status = 1;
                 
                 };
             }
             else if (direction === "vertical") {
                 for (let i = 0; i < ship.getShipLength(); i++) {
-                    coordinates[y+i][x] = {ship: ship, part: i, status: 1};
+                    coordinates[y + i][x].ship = ship;
+                    coordinates[y + i][x].part = i;
+                    coordinates[y + i][x].status = 1;
+                    
                 };
             };
         }
