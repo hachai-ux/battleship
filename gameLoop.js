@@ -1,5 +1,5 @@
 import { ShipFactory, PlayerFactory, ComputerFactory, GameboardFactory } from './factories.js';
-import { observeFields, renderGameboard} from './domManipulation.js';
+import { updateField, renderGameboard} from './domManipulation.js';
 //facilitator
 
 const runGameLoop = (() => {
@@ -44,11 +44,25 @@ const runGameLoop = (() => {
 
     renderGameboard(10, playerGameboard, playerID);
     renderGameboard(10, computerGameboard, computerID);
-    observeFields(computerID);
 
-    const playerTurn = false;
-    const computerTurn = false;
 
+    const computerContainer = document.querySelector(`#${computerID}-board`);
+    const fields = computerContainer.querySelectorAll('.game-field');
+    fields.forEach(field => {
+         field.addEventListener('click', () => {
+            const y = field.getAttribute('data-y');
+            const x = field.getAttribute('data-x');
+            
+             player.attack(y, x, computerGameboard);
+             updateField(computerGameboard, computerID, y, x);
+             const attackedFields = computer.aiAttack(playerGameboard);
+             updateField(playerGameboard, playerID, attackedFields.y, attackedFields.x);
+            
+        });
+    });
+        
+
+   
     
     //test
     //updateField(computerGameboard, computerID, 0, 0);

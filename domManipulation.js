@@ -1,3 +1,4 @@
+//setup doms, doms change board
 
 const renderGameboard = (size, gameboard, id) => {
     const container = document.querySelector(`#${id}-board`);
@@ -20,25 +21,7 @@ const renderGameboard = (size, gameboard, id) => {
     _renderShips(gameboard, id);
 };
 
-const observeFields = (player, id) => {
-    
 
-    _updateField(gameBoard, id);
-    const container = document.querySelector(`#${id}-board`);
-    const fields = container.querySelectorAll('.game-field');
-     fields.forEach(field => {
-        field.addEventListener('click', () => {
-            console.log(field.style.background);
-            if (field.style.background === 'lightskyblue') {
-                field.style.background = 'firebrick';
-            }
-            else if (field.style.background === '') {
-                field.style.background = 'darkseagreen';
-            
-            };
-        });
-    }); 
-};
 
 
 const _renderShips = (gameboard, id) => {
@@ -54,7 +37,7 @@ const _renderShips = (gameboard, id) => {
     }))
 };
 
-const _updateField = (gameboard, id, y, x) => {
+const updateField = (gameboard, id, y, x) => {
 //render placement of ships on coordinates
 //color the fields depending on status
     // 0 = empty = no color
@@ -70,19 +53,14 @@ const _updateField = (gameboard, id, y, x) => {
 
     //sunk
     if (gameboard.getCoordinates()[y][x].status === 2) {
-        let iterator = 0;
         //get field number
-        iterator = (y + 1) * (x + 1);
-        const field = container.querySelector(`.board-row>button[data-index="${iterator}"]`);
-        field.style.background = 'brickred';
+        const field = container.querySelector(`.board-row>button[data-y="${y}"][data-x="${x}"]`);
+        field.style.background = 'firebrick';
         
     }
     //missed
     else if (gameboard.getCoordinates()[y][x].status === 3) {
-        let iterator = 0;
-        //get field number
-        iterator = (y + 1) * (x + 1);
-        const field = container.querySelector(`.board-row>button[data-index="${iterator}"]`);
+        const field = container.querySelector(`.board-row>button[data-y="${y}"][data-x="${x}"]`);
         field.style.background = 'darkseagreen';
         
     };
@@ -90,6 +68,6 @@ const _updateField = (gameboard, id, y, x) => {
 
 };
 
-export { renderGameboard, observeFields};
+export { updateField, renderGameboard};
 
 //backlog: check if it has already placed ships #redundant if user places ships on gameboard

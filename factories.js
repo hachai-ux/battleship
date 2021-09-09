@@ -135,7 +135,9 @@ const GameboardFactory = (size) => {
 
     _createBoard();
 
-    return { placeShip, receiveAttack, getCoordinates };
+    return {
+        placeShip, receiveAttack, getCoordinates
+    };
 };
 
 const PlayerFactory = () => {
@@ -156,12 +158,16 @@ const ComputerFactory = () => {
         const x = _getRandomInt(0, gameboardSize);
         if (_checkLegal(y, x, gameboard) === true) {
             gameboard.receiveAttack(y, x);
+          
+            return { y, x };
         }
         else {
             //when all fields are 2 or 3 then we have a problem, however the game will probably stop before that
             //not the most elegant solution so far
-            aiAttack(gameboard);
+            return aiAttack(gameboard);
         };
+
+        
        
     };
 
