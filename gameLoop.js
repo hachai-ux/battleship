@@ -1,5 +1,5 @@
 import { ShipFactory, PlayerFactory, ComputerFactory, GameboardFactory } from './factories.js';
-import { updateField, renderGameboard, showWinner} from './domManipulation.js';
+import { updateField, renderGameboard, showWinner, renderDraggableShips, rotateShips} from './domManipulation.js';
 //facilitator
 
 const runGameLoop = (() => {
@@ -44,6 +44,13 @@ const runGameLoop = (() => {
 
     renderGameboard(10, playerGameboard, playerID);
     renderGameboard(10, computerGameboard, computerID);
+
+    renderDraggableShips(courier.length, playerID);
+    renderDraggableShips(battleship.length, playerID);
+    renderDraggableShips(destroyer.length, playerID);
+    renderDraggableShips(submarine.length, playerID);
+    renderDraggableShips(patrolBoat.length, playerID);
+    rotateShips();
 
 
     const computerContainer = document.querySelector(`#${computerID}-board`);
@@ -101,6 +108,7 @@ const runGameLoop = (() => {
 
         if (computerStatus === true) {
             showWinner(playerID);
+
         }
 
         const playerStatus =  playerGameboard.getCoordinates().every(row => row.every(field => {

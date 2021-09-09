@@ -71,10 +71,38 @@ const updateField = (gameboard, id, y, x) => {
 const showWinner = (id) => {
     const body = document.querySelector('body');
     const winnerMessage = document.createElement('div');
-    winnerMessage.textContent = `The winner is ${id}`;
+    winnerMessage.textContent = `The winner is ${id}. Refresh page to restart. I didn't implement restart game options.`;
     body.appendChild(winnerMessage);
 };
 
-export { updateField, renderGameboard, showWinner};
+const renderDraggableShips = (size, id) => {
+
+    //make rotataeble
+
+    const container = document.querySelector(`#${id}-board`);
+    const body = document.querySelector('body');
+    const shipContainer = document.createElement('div');
+    shipContainer.classList.add('ship-container');
+    shipContainer.draggable = true;
+
+    for (let i = 0; i < size; i++){
+        const ship = document.createElement('button');
+            ship.classList.add('draggable-ship');
+            ship.style.background = 'lightskyblue';
+        shipContainer.appendChild(ship);
+    };
+   body.appendChild(shipContainer);
+    
+         
+    };
+
+const rotateShips = () => {
+    const rotateButton = document.createElement('button');
+    const body = document.querySelector('body');
+    rotateButton.textContent = 'Rotate Ships';
+    body.appendChild(rotateButton);
+}
+
+export { updateField, renderGameboard, showWinner, renderDraggableShips, rotateShips};
 
 //backlog: check if it has already placed ships #redundant if user places ships on gameboard
