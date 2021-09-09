@@ -1,5 +1,5 @@
 import { ShipFactory, PlayerFactory, ComputerFactory, GameboardFactory } from './factories.js';
-import { updateField, renderGameboard} from './domManipulation.js';
+import { updateField, renderGameboard, showWinner} from './domManipulation.js';
 //facilitator
 
 const runGameLoop = (() => {
@@ -53,15 +53,66 @@ const runGameLoop = (() => {
             const y = field.getAttribute('data-y');
             const x = field.getAttribute('data-x');
             
-             player.attack(y, x, computerGameboard);
+             //check if field has not been attacked yet
+             if (computerGameboard.getCoordinates()[y][x].status !== 2) {
+                player.attack(y, x, computerGameboard);
              updateField(computerGameboard, computerID, y, x);
              const attackedFields = computer.aiAttack(playerGameboard);
              updateField(playerGameboard, playerID, attackedFields.y, attackedFields.x);
             
+             _checkWinCondition();  
+             }
+            
+    
         });
     });
+
+    const _checkWinCondition = () => {
+        let computerStatus = false;
+        let iterator = 0;
+        let shipIterator = 0;
+
+        //count number of ship fields
+        computerGameboard.getCoordinates().forEach(row => row.forEach(field => {
+            if (typeof field === 'object') {
+                if (field.hasOwnProperty('ship')) {
+                    shipIterator++;
+                }
+                
+            }
+        }));
+
+        computerGameboard.getCoordinates().forEach(row => row.forEach(field => {
+            if (typeof field === 'object') {
+                if (field.hasOwnProperty('ship')) {
+                    if (field.ship.getSunkStatus() === true) {
+                        iterator++;
+                        if (iterator === shipIterator) {
+                            computerStatus = true;
+                            };
+                    };
+                    console.log(field.ship.getSunkStatus());
+                }
+                
+            }
+        }));
+       
+        console.log(computerStatus);
+
+        if (computerStatus === true) {
+            showWinner(playerID);
+        }
+
+        const playerStatus =  playerGameboard.getCoordinates().every(row => row.every(field => {
+            field.ship.getSunkStatus === true;
+        }));
+        if (playerStatus === true) {
+            showWinner(computerID);
+        }
+    };
         
 
+    //check win condition
    
     
     //test

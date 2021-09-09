@@ -68,6 +68,13 @@ const updateField = (gameboard, id, y, x) => {
 
 };
 
-export { updateField, renderGameboard};
+const showWinner = (id) => {
+    const body = document.querySelector('body');
+    const winnerMessage = document.createElement('div');
+    winnerMessage.textContent = `The winner is ${id}`;
+    body.appendChild(winnerMessage);
+};
+
+export { updateField, renderGameboard, showWinner};
 
 //backlog: check if it has already placed ships #redundant if user places ships on gameboard
