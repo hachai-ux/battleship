@@ -47,11 +47,14 @@ const runGameLoop = (() => {
          console.log(shipContainers);
         // Add the ondragstart event listener
         shipContainers.forEach(shipContainer => {
-        shipContainer.addEventListener("dragstart", dragstart_handler);
+            shipContainer.addEventListener("dragstart", dragstart_handler);
+            
         });
          
-     };
-    
+        shipContainer.appendChild(ship);
+    };
+         
+ 
    
     
    
@@ -145,7 +148,7 @@ const runGameLoop = (() => {
     renderDraggableShips(submarine.length, playerID);
     renderDraggableShips(patrolBoat.length, playerID);
     rotateShips();
-    observeDraggeableShips();
+    //observeDraggeableShips();
 
         
 

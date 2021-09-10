@@ -6,15 +6,17 @@ const renderGameboard = (size, gameboard, id) => {
        //dragover and drop handlers
         const dragover_handler = (ev) => {
             ev.preventDefault();
+            console.log(ev);
             ev.dataTransfer.dropEffect = "move";
         };
 
         const drop_handler = (ev) => {
             ev.preventDefault();
-            console.log('hello');
             // Get the id of the target and add the moved element to the target's DOM
             const data = ev.dataTransfer.getData("text/plain");
-            ev.target.appendChild(document.getElementById(data));
+            console.log(data);
+            
+            //ev.target.appendChild(document.getElementById(data));
         };
     
     gameboard.getCoordinates().forEach(row => {
@@ -29,11 +31,13 @@ const renderGameboard = (size, gameboard, id) => {
             button.classList.add('game-field');
             button.classList.add(`row-${i}`);
           
-
+            
             button.addEventListener("dragover", dragover_handler);
             button.addEventListener("drop", drop_handler);
+            
 
             boardRow.appendChild(button);
+            
 
             
 
@@ -107,8 +111,13 @@ const renderDraggableShips = (size, id) => {
     shipContainer.classList.add('ship-container');
     shipContainer.draggable = true;
 
+   
+
+
     for (let i = 0; i < size; i++){
         const ship = document.createElement('button');
+        
+            
             ship.classList.add('draggable-ship');
             ship.style.background = 'lightskyblue';
         shipContainer.appendChild(ship);
