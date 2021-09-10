@@ -29,29 +29,32 @@ const runGameLoop = (() => {
     const computerSubmarine = ShipFactory(submarine.length);
     const computerPatrolBoat = ShipFactory(patrolBoat.length);
 
-    //pre-determined coordinates to test
-    playerGameboard.placeShip(playerCourier, 0, 0, 'horizontal');
-    playerGameboard.placeShip(playerBattleship, 1, 0, 'horizontal');
-    playerGameboard.placeShip(playerDestroyer, 2, 0, 'horizontal');
-    playerGameboard.placeShip(playerSubmarine, 3, 0, 'horizontal');
-    playerGameboard.placeShip(playerPatrolBoat, 4, 0, 'horizontal');
 
-    computerGameboard.placeShip(computerCourier, 0, 0, 'horizontal');
-    computerGameboard.placeShip(computerBattleship, 1, 0, 'horizontal');
-    computerGameboard.placeShip(computerDestroyer, 2, 0, 'horizontal');
-    computerGameboard.placeShip(computerSubmarine, 3, 0, 'horizontal');
-    computerGameboard.placeShip(computerPatrolBoat, 4, 0, 'horizontal');
 
-    renderGameboard(10, playerGameboard, playerID);
-    renderGameboard(10, computerGameboard, computerID);
+     const observeDraggeableShips = () => {
 
-    renderDraggableShips(courier.length, playerID);
-    renderDraggableShips(battleship.length, playerID);
-    renderDraggableShips(destroyer.length, playerID);
-    renderDraggableShips(submarine.length, playerID);
-    renderDraggableShips(patrolBoat.length, playerID);
-    rotateShips();
+         const dragstart_handler = (ev) => {
+             // Add the target element's id to the data transfer object
+             console.log(ev.target.childNodes.length);
+             ev.dataTransfer.setData("text/plain", ev.target.childNodes.length);
+             ev.dataTransfer.dropEffect = "link";
+         };
 
+       
+    
+
+         const shipContainers = document.querySelectorAll("body>.ship-container");
+         console.log(shipContainers);
+        // Add the ondragstart event listener
+        shipContainers.forEach(shipContainer => {
+        shipContainer.addEventListener("dragstart", dragstart_handler);
+        });
+         
+     };
+    
+   
+    
+   
 
     const computerContainer = document.querySelector(`#${computerID}-board`);
     const fields = computerContainer.querySelectorAll('.game-field');
@@ -118,6 +121,32 @@ const runGameLoop = (() => {
             showWinner(computerID);
         }
     };
+
+
+      //pre-determined coordinates to test
+    playerGameboard.placeShip(playerCourier, 0, 0, 'horizontal');
+    playerGameboard.placeShip(playerBattleship, 1, 0, 'horizontal');
+    playerGameboard.placeShip(playerDestroyer, 2, 0, 'horizontal');
+    playerGameboard.placeShip(playerSubmarine, 3, 0, 'horizontal');
+    playerGameboard.placeShip(playerPatrolBoat, 4, 0, 'horizontal');
+
+    computerGameboard.placeShip(computerCourier, 0, 0, 'horizontal');
+    computerGameboard.placeShip(computerBattleship, 1, 0, 'horizontal');
+    computerGameboard.placeShip(computerDestroyer, 2, 0, 'horizontal');
+    computerGameboard.placeShip(computerSubmarine, 3, 0, 'horizontal');
+    computerGameboard.placeShip(computerPatrolBoat, 4, 0, 'horizontal');
+
+    renderGameboard(10, playerGameboard, playerID);
+    renderGameboard(10, computerGameboard, computerID, '', '');
+
+    renderDraggableShips(courier.length, playerID);
+    renderDraggableShips(battleship.length, playerID);
+    renderDraggableShips(destroyer.length, playerID);
+    renderDraggableShips(submarine.length, playerID);
+    renderDraggableShips(patrolBoat.length, playerID);
+    rotateShips();
+    observeDraggeableShips();
+
         
 
     //check win condition

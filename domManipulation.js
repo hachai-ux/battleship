@@ -2,6 +2,21 @@
 
 const renderGameboard = (size, gameboard, id) => {
     const container = document.querySelector(`#${id}-board`);
+
+       //dragover and drop handlers
+        const dragover_handler = (ev) => {
+            ev.preventDefault();
+            ev.dataTransfer.dropEffect = "move";
+        };
+
+        const drop_handler = (ev) => {
+            ev.preventDefault();
+            console.log('hello');
+            // Get the id of the target and add the moved element to the target's DOM
+            const data = ev.dataTransfer.getData("text/plain");
+            ev.target.appendChild(document.getElementById(data));
+        };
+    
     gameboard.getCoordinates().forEach(row => {
         const boardRow = document.createElement('div');
         boardRow.classList.add('board-row');
@@ -13,8 +28,15 @@ const renderGameboard = (size, gameboard, id) => {
             button.setAttribute('data-x', x);
             button.classList.add('game-field');
             button.classList.add(`row-${i}`);
+          
+
+            button.addEventListener("dragover", dragover_handler);
+            button.addEventListener("drop", drop_handler);
 
             boardRow.appendChild(button);
+
+            
+
         });
          container.appendChild(boardRow);
     });
@@ -34,7 +56,7 @@ const _renderShips = (gameboard, id) => {
         if (status === 1) {
             domField.style.background = "lightskyblue";
         };
-    }))
+    }));
 };
 
 const updateField = (gameboard, id, y, x) => {
