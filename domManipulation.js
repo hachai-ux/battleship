@@ -119,7 +119,11 @@ const renderDraggableShips = (size, id) => {
         
             
             ship.classList.add('draggable-ship');
-            ship.style.background = 'lightskyblue';
+        ship.style.background = 'lightskyblue';
+        
+        ship.addEventListener('mousedown', (e) => {
+            const 
+        })
         shipContainer.appendChild(ship);
     };
    body.appendChild(shipContainer);
